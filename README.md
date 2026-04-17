@@ -260,6 +260,16 @@ Available at: **[paolodegidio.gumroad.com/l/cortex-homelab](https://paolodegidio
 
 ---
 
+---
+
+## Articles & Resources
+
+- **Dev.to:** [I built an AI log monitor for my homelab — local LLM reads my *arr logs so I don't have to](https://dev.to/pdegidio)
+
+## Related Projects
+
+- **[Argus](https://github.com/pdegidio/argus-disk)** — Predictive disk health monitor. SMART history, linear regression forecasts, DAS enclosure support. Runs on the same machine, zero conflicts.
+
 ## Contributing
 
 Issues and pull requests are welcome. If you find Cortex useful, consider starring the repo — it helps others find it.

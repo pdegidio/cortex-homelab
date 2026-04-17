@@ -260,6 +260,16 @@ Disponibile su: **[paolodegidio.gumroad.com/l/cortex-homelab](https://paolodegid
 
 ---
 
+---
+
+## Articoli & Risorse
+
+- **Dev.to:** [How to get individual SMART data from a TerraMaster DAS](https://dev.to/pdegidio)
+
+## Progetti Correlati
+
+- **[Argus](https://github.com/pdegidio/argus-disk)** — Monitor predittivo per la salute dei dischi. Storico SMART, forecast con regressione lineare, supporto enclosure DAS. Gira sulla stessa macchina senza conflitti.
+
 ## Contribuire
 
 Issue e pull request sono benvenuti. Se Cortex ti è utile, considera di mettere una stella al repo — aiuta altri a trovarlo.
