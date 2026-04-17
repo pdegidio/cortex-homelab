@@ -256,7 +256,7 @@ The free tier covers AI monitoring. The full Cortex stack includes:
 - Custom Ollama Modelfile with baked-in infrastructure knowledge
 - Step-by-step setup guide from zero to fully operational
 
-Available at: **[gumroad link]**
+Available at: **[paolodegidio.gumroad.com/l/cortex-homelab](https://paolodegidio.gumroad.com/l/cortex-homelab)**
 
 ---
 
