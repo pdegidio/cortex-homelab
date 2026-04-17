@@ -1,0 +1,81 @@
+# cortex-exporter.service
+# Systemd unit file for the Cortex Prometheus metrics exporter
+#
+# Installation:
+#   sudo cp docs/systemd-exporter.service /etc/systemd/system/cortex-exporter.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable cortex-exporter
+#   sudo systemctl start cortex-exporter
+#
+# Check status:
+#   sudo systemctl status cortex-exporter
+#   journalctl -u cortex-exporter -f
+#
+# The exporter will now start automatically on boot and restart
+# automatically if it crashes.
+
+[Unit]
+Description=Cortex Prometheus Metrics Exporter
+Documentation=https://github.com/pdegidio/cortex-homelab
+# Start after network is available (Prometheus may scrape immediately)
+After=network-online.target
+Wants=network-online.target
+# If Docker is running on the same host, wait for it too
+After=docker.service
+
+[Service]
+Type=simple
+User=cortex
+Group=cortex
+
+# Adjust this path if you installed scripts to a different location
+ExecStart=/usr/bin/python3 /opt/cortex/scripts/cortex-exporter.py \
+    --config /opt/cortex/config/cortex.conf
+
+# Restart policy: restart on any failure, with a 10-second delay
+Restart=on-failure
+RestartSec=10s
+
+# Allow up to 5 restart attempts within 60 seconds before giving up
+StartLimitInterval=60s
+StartLimitBurst=5
+
+# Logging: output goes to journald by default
+# View with: journalctl -u cortex-exporter
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=cortex-exporter
+
+# Security hardening
+# The exporter only needs to read one file and serve HTTP — lock it down
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cortex
+PrivateTmp=true
+PrivateDevices=true
+
+# Resource limits — the exporter is lightweight
+MemoryMax=64M
+CPUQuota=10%
+
+# Environment
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+
+
+# ============================================================
+#  Notes on the 'cortex' user
+#
+#  The service runs as a dedicated 'cortex' system user for security.
+#  Create it with:
+#
+#    sudo useradd --system --no-create-home --shell /usr/sbin/nologin cortex
+#    sudo mkdir -p /var/lib/cortex /opt/cortex
+#    sudo chown -R cortex:cortex /var/lib/cortex /opt/cortex
+#
+#  If you prefer to run as your own user during testing,
+#  change User= and Group= to your username.
+# ============================================================

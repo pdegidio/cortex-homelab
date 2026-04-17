@@ -1,0 +1,42 @@
+# Cortex — gitignore
+
+# Real config (contains credentials)
+config/cortex.conf
+cortex.conf
+
+# Logs
+*.log
+/var/log/cortex*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# State files
+digest_history.json
+cortex_state.json
+
+# Distribution
+*.zip
+*.tar.gz
+
+# Marketing / internal
+docs/gumroad-product-text.md
+docs/thumbnail-square.png
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Future products (separate repos)
+predictive-disk/

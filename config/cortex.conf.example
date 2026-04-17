@@ -1,0 +1,151 @@
+# ============================================================
+#  Cortex — AI-Powered Homelab Monitor
+#  Configuration file
+#
+#  Copy this file to cortex.conf and fill in your values:
+#    cp cortex.conf.example cortex.conf
+#
+#  Lines starting with # are comments and are ignored.
+#  Do not add quotes around values unless noted.
+# ============================================================
+
+
+# ------------------------------------------------------------
+#  OLLAMA — LLM inference endpoint
+# ------------------------------------------------------------
+
+# URL of your Ollama instance.
+# Use localhost if Ollama runs on the same host as Cortex.
+# Use a LAN IP if Ollama runs on a separate GPU workstation (e.g. ALFRED).
+OLLAMA_HOST=http://192.168.1.x:11434
+
+# Model to use for inference.
+# After running `ollama create cortex -f Modelfile`, use cortex:latest.
+# Fallback option if you skip the Modelfile: qwen2.5:14b-instruct
+OLLAMA_MODEL=cortex:latest
+
+# Timeout in seconds for LLM inference calls.
+# Increase if you run on CPU-only hardware.
+OLLAMA_TIMEOUT=60
+
+
+# ------------------------------------------------------------
+#  NTFY — Push notifications
+# ------------------------------------------------------------
+
+# Base URL of your ntfy instance.
+# Self-hosted example: http://192.168.1.x:8090
+# Public fallback:     https://ntfy.sh
+NTFY_URL=http://your-ntfy-instance:8090
+
+# Topic to publish alerts and digests to.
+# Must match the topic you subscribe to on your device.
+NTFY_TOPIC=homelab-system
+
+# Topic for critical alerts (optional — set same as NTFY_TOPIC to merge).
+# If set to a separate topic, you can configure higher-priority notifications.
+NTFY_TOPIC_CRITICAL=homelab-critical
+
+# ntfy access token (only needed if your instance requires authentication).
+# Leave blank if your ntfy instance is open or on a trusted LAN.
+NTFY_TOKEN=
+
+
+# ------------------------------------------------------------
+#  DOCKER — Containers to monitor
+# ------------------------------------------------------------
+
+# Space-separated list of container names to watch.
+# These must match the actual container names shown by `docker ps`.
+MONITORED_CONTAINERS="sonarr radarr prowlarr qbittorrent plex tautulli"
+
+# Docker socket path. Default works for most setups.
+# Change only if you use a rootless Docker installation.
+DOCKER_SOCKET=/var/run/docker.sock
+
+# How many lines of logs to read per container per cycle.
+# Higher values = more context for the LLM, but slower runs.
+LOG_LINES=100
+
+
+# ------------------------------------------------------------
+#  *ARR SERVICES — API access for log and queue analysis
+# ------------------------------------------------------------
+
+# Sonarr
+SONARR_URL=http://localhost:8989
+SONARR_API_KEY=your_sonarr_api_key_here
+
+# Radarr
+RADARR_URL=http://localhost:7878
+RADARR_API_KEY=your_radarr_api_key_here
+
+# Prowlarr
+PROWLARR_URL=http://localhost:9696
+PROWLARR_API_KEY=your_prowlarr_api_key_here
+
+# Readarr (optional — leave blank to disable)
+READARR_URL=
+READARR_API_KEY=
+
+# Lidarr (optional — leave blank to disable)
+LIDARR_URL=
+LIDARR_API_KEY=
+
+
+# ------------------------------------------------------------
+#  NOISE FILTERING — Suppress non-actionable log entries
+# ------------------------------------------------------------
+
+# Comma-separated list of strings to filter out of logs before LLM analysis.
+# Any log line containing one of these strings will be silently dropped.
+# Add your own patterns to reduce noise from your specific setup.
+NOISE_PATTERNS="ffprobe,VideoFileInfoReader,429,invalid torrent,9696/,RecycleBinCleanupService,DownloadedEpisodesImportService"
+
+# Set to true to log how many lines were filtered each cycle (useful for tuning).
+NOISE_DEBUG=false
+
+
+# ------------------------------------------------------------
+#  MONITORING SCHEDULE — Timing and state
+# ------------------------------------------------------------
+
+# Path to the state file used to track alert history between runs.
+# Cortex uses this to avoid sending duplicate alerts.
+STATE_FILE=/var/lib/cortex/state.json
+
+# Minimum number of minutes between repeated alerts for the same issue.
+# Prevents alert storms if the same problem persists across multiple cycles.
+ALERT_COOLDOWN_MINUTES=120
+
+# Hour of the day to send the daily digest (24h format, server local time).
+# The cron job should match this value.
+DIGEST_HOUR=9
+
+
+# ------------------------------------------------------------
+#  PROMETHEUS EXPORTER — Metrics endpoint
+# ------------------------------------------------------------
+
+# Port on which the Prometheus exporter listens.
+# Make sure this port is reachable from your Prometheus instance.
+EXPORTER_PORT=9192
+
+# Bind address for the exporter. Use 0.0.0.0 to listen on all interfaces,
+# or a specific IP to restrict access (e.g. your Prometheus host's LAN IP).
+EXPORTER_BIND=0.0.0.0
+
+
+# ------------------------------------------------------------
+#  LOGGING — Cortex internal logs
+# ------------------------------------------------------------
+
+# Log level: DEBUG, INFO, WARNING, ERROR
+# Use DEBUG during initial setup, INFO for normal operation.
+LOG_LEVEL=INFO
+
+# Path to the Cortex log file (also set in your cron job).
+LOG_FILE=/var/log/cortex.log
+
+# Maximum log file size in MB before rotation.
+LOG_MAX_SIZE_MB=10

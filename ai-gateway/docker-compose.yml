@@ -1,0 +1,59 @@
+###############################################################
+#  Cortex — AI Gateway
+#  docker-compose.yml
+#
+#  A lightweight nginx proxy that sits in front of your Ollama
+#  instance. Provides:
+#    - A stable internal hostname (ai-gateway) for Cortex scripts
+#    - Basic rate limiting to prevent runaway inference calls
+#    - Request logging for debugging
+#    - Optional: restrict access to your homelab LAN only
+#
+#  Usage:
+#    docker compose up -d
+#
+#  The gateway will be reachable at:
+#    http://localhost:8080   (from the host)
+#    http://ai-gateway:8080  (from other containers on the same network)
+#
+#  Set in cortex.conf:
+#    OLLAMA_HOST=http://localhost:8080
+###############################################################
+
+services:
+
+  ai-gateway:
+    image: nginx:1.25-alpine
+    container_name: ai-gateway
+    restart: unless-stopped
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./logs:/var/log/nginx
+
+    networks:
+      - cortex-net
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+    labels:
+      cortex.role: "ai-gateway"
+      cortex.version: "1.0.0"
+
+
+networks:
+  cortex-net:
+    name: cortex-net
+    # Change to 'bridge' if you want to isolate from other Docker networks
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
