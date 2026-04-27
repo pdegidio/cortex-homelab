@@ -274,6 +274,18 @@ Available at: **[paolodegidio.gumroad.com/l/cortex-homelab](https://paolodegidio
 
 Issues and pull requests are welcome. If you find Cortex useful, consider starring the repo — it helps others find it.
 
+## Want to support the project?
+
+Two ways to back this:
+
+**Get just Cortex Core (€25)** with email support and update notifications:
+👉 [paolodegidio.gumroad.com/l/wdssne](https://paolodegidio.gumroad.com/l/wdssne)
+
+**Get the Pro bundle (€35)** — Cortex Core + the AI log monitor (Cortex), 20% off vs buying separately:
+👉 [paolodegidio.gumroad.com/l/xixnpn](https://paolodegidio.gumroad.com/l/xixnpn)
+
+The GitHub version is and will stay 100% free under MIT.
+
 ---
 
 ## License
